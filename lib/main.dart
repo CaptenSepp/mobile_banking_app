@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:hive_training_johannes/core/my_app.dart';
-import 'package:hive_training_johannes/core/provider/my_app_provider.dart';
 import 'package:hive_training_johannes/model/transaction.dart';
-
-import 'page/transaction_page.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
