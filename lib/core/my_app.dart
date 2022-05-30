@@ -1,16 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:vrouter/vrouter.dart';
 
-import '../screens/transaction_page.dart';
+import '../modules/home/screens/home_page.dart';
+import '../modules/home/screens/transaction_page.dart';
+
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return VRouter(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(primarySwatch: Colors.brown),
-      home: TransactionPage(),
+      routes: [
+        VWidget(path: '/', widget: HomePage(context: context)),
+        VWidget(path: '/transactionPage', widget: TransactionPage(context:context)),
+        VRouteRedirector(path: r'*', redirectTo: '/')
+      ],
     );
   }
 }

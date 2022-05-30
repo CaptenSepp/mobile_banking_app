@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-
 import 'package:hive_flutter/adapters.dart';
-
-import 'package:hive_training_johannes/boxes.dart';
-
+import 'package:hive_training_johannes/database/boxes.dart';
 import 'package:hive_training_johannes/model/transaction.dart';
+import 'package:vrouter/vrouter.dart';
 
-import 'package:hive_training_johannes/widgets/transaction_dialog.dart';
+import '../widgets/transaction_dialog.dart';
 
 class TransactionPage extends StatefulWidget {
-  const TransactionPage({Key? key}) : super(key: key);
+  const TransactionPage({Key? key, required BuildContext context})
+      : super(key: key);
 
   @override
   _TransactionPageState createState() => _TransactionPageState();
@@ -18,14 +17,13 @@ class TransactionPage extends StatefulWidget {
 class _TransactionPageState extends State<TransactionPage> {
   @override
   void dispose() {
-    Hive.close();
-
+    // Hive.close();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        extendBodyBehindAppBar: true,
+        extendBodyBehindAppBar: false,
         appBar: AppBar(
           title: Text('Hive Expense Tracker'),
           centerTitle: true,
@@ -34,7 +32,6 @@ class _TransactionPageState extends State<TransactionPage> {
           valueListenable: Boxes.getTransactions().listenable(),
           builder: (context, box, _) {
             final transactions = box.values.toList().cast<Transaction>();
-
             return buildContent(transactions);
           },
         ),
@@ -46,6 +43,10 @@ class _TransactionPageState extends State<TransactionPage> {
               onClickedDone: addTransaction,
             ),
           ),
+        ),
+        bottomSheet: IconButton(
+          onPressed: () => VRouter.of(context).to('/'),
+          icon: Icon(Icons.home),
         ),
       );
 
@@ -66,7 +67,6 @@ class _TransactionPageState extends State<TransactionPage> {
       );
 
       final newExpenseString = '\$${netExpense.toStringAsFixed(2)}';
-
       final color = netExpense > 0 ? Colors.green : Colors.red;
 
       return Column(
@@ -87,7 +87,6 @@ class _TransactionPageState extends State<TransactionPage> {
               itemCount: transactions.length,
               itemBuilder: (BuildContext context, int index) {
                 final transaction = transactions[index];
-
                 return buildTransaction(context, transaction);
               },
             ),
@@ -102,30 +101,22 @@ class _TransactionPageState extends State<TransactionPage> {
     Transaction transaction,
   ) {
     final color = transaction.isExpense ? Colors.red : Colors.green;
-
-    // final date = DateFormat.yMMMd().format(transaction.createdDate);
-
     final amount = '\$' + transaction.amount.toStringAsFixed(2);
 
     return Card(
       color: Colors.white,
       child: ExpansionTile(
         tilePadding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-
         title: Text(
           transaction.name,
           maxLines: 2,
           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
         ),
-
-        // subtitle: Text(date),
-
         trailing: Text(
           amount,
           style: TextStyle(
               color: color, fontWeight: FontWeight.bold, fontSize: 16),
         ),
-
         children: [
           buildButtons(context, transaction),
         ],
@@ -168,18 +159,7 @@ class _TransactionPageState extends State<TransactionPage> {
       ..isExpense = isExpense;
 
     final box = Boxes.getTransactions();
-
     box.add(transaction);
-
-    //box.put('mykey', transaction);
-
-    // final mybox = Boxes.getTransactions();
-
-    // final myTransaction = mybox.get('key');
-
-    // mybox.values;
-
-    // mybox.keys;
   }
 
   void editTransaction(
@@ -189,25 +169,12 @@ class _TransactionPageState extends State<TransactionPage> {
     bool isExpense,
   ) {
     transaction.name = name;
-
     transaction.amount = amount;
-
     transaction.isExpense = isExpense;
-
-    // final box = Boxes.getTransactions();
-
-    // box.put(transaction.key, transaction);
-
     transaction.save();
   }
 
   void deleteTransaction(Transaction transaction) {
-    // final box = Boxes.getTransactions();
-
-    // box.delete(transaction.key);
-
     transaction.delete();
-
-    //setState(() => transactions.remove(transaction));
   }
 }
