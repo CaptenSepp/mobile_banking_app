@@ -1,4 +1,4 @@
-# hive_training_johannes
+# mobile_banking_app
 
 A new Flutter project.
 
