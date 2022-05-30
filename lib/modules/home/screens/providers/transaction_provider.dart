@@ -1,33 +1,17 @@
 import 'package:flutter/material.dart';
 import '../../../../database/boxes.dart';
 import '../../../../model/transaction.dart';
+import '../components/over_view_card.dart';
 
 Widget buildTransaction(
-  BuildContext context,
-  Transaction transaction,
+  final BuildContext context,
+  final Transaction transaction,
 ) {
   final color = transaction.isExpense ? Colors.red : Colors.green;
   final amount = '\$' + transaction.amount.toStringAsFixed(2);
 
-  return Card(
-    color: Colors.white,
-    child: ExpansionTile(
-      tilePadding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
-      title: Text(
-        transaction.name,
-        maxLines: 2,
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-      ),
-      trailing: Text(
-        amount,
-        style:
-            TextStyle(color: color, fontWeight: FontWeight.bold, fontSize: 16),
-      ),
-      children: const [
-        // buildButtons(context, transaction),
-      ],
-    ),
-  );
+  return OverViewCard(
+      amount: amount, color: color, context: context, transaction: transaction);
 }
 
 Future addTransaction(String name, double amount, bool isExpense) async {

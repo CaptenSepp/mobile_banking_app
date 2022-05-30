@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:vrouter/vrouter.dart';
 
 class HomePage extends StatelessWidget {
-  final BuildContext context;
-  
-  const HomePage({Key? key, required this.context}) : super(key: key);
+
+  const HomePage({
+    Key? key,
+  }) : super(key: key);
 
   @override
-  
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),

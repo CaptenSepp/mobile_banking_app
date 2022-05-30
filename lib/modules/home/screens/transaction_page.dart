@@ -4,12 +4,14 @@ import 'package:hive_training_johannes/database/boxes.dart';
 import 'package:hive_training_johannes/model/transaction.dart';
 import 'package:vrouter/vrouter.dart';
 
-import '../widgets/transaction_dialog.dart';
 import 'providers/transaction_provider.dart';
+import 'widgets/transacions_overview.dart';
+import 'widgets/transaction_dialog.dart';
 
 class TransactionPage extends StatefulWidget {
-  const TransactionPage({Key? key, required BuildContext context})
-      : super(key: key);
+  const TransactionPage({
+    Key? key,
+  }) : super(key: key);
 
   @override
   _TransactionPageState createState() => _TransactionPageState();
@@ -18,7 +20,7 @@ class TransactionPage extends StatefulWidget {
 class _TransactionPageState extends State<TransactionPage> {
   @override
   void dispose() {
-    // Hive.close();
+    //! Hive.close();
     super.dispose();
   }
 
@@ -51,54 +53,6 @@ class _TransactionPageState extends State<TransactionPage> {
         ),
       );
 
-  Widget buildContent(List<Transaction> transactions) {
-    if (transactions.isEmpty) {
-      return Center(
-        child: Text(
-          'No expenses yet!',
-          style: TextStyle(fontSize: 24),
-        ),
-      );
-    } else {
-      final netExpense = transactions.fold<double>(
-        0,
-        (previousValue, transaction) => transaction.isExpense
-            ? previousValue - transaction.amount
-            : previousValue + transaction.amount,
-      );
-
-      final newExpenseString = '\$${netExpense.toStringAsFixed(2)}';
-      final color = netExpense > 0 ? Colors.green : Colors.red;
-
-      return Column(
-        children: [
-          SizedBox(height: 24),
-          Text(
-            'Net Expense: $newExpenseString',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 20,
-              color: color,
-            ),
-          ),
-          SizedBox(height: 24),
-          Expanded(
-            child: ListView.builder(
-              padding: EdgeInsets.all(8),
-              itemCount: transactions.length,
-              itemBuilder: (BuildContext context, int index) {
-                final transaction = transactions[index];
-                return buildTransaction(context, transaction);
-              },
-            ),
-          ),
-        ],
-      );
-    }
-  }
-
-  
-
   // Widget buildButtons(BuildContext context, Transaction transaction) => Row(
   //       children: [
   //         Expanded(
@@ -126,5 +80,4 @@ class _TransactionPageState extends State<TransactionPage> {
   //       ],
   //     );
 
- 
 }

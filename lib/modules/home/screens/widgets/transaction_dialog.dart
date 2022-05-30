@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../../../model/transaction.dart';
-
+import '../../../../model/transaction.dart';
 
 class TransactionDialog extends StatefulWidget {
   final Transaction? transaction;
